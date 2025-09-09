@@ -7,13 +7,10 @@ class IsAdminOrIfAuthenticatedReadOnly(BasePermission):
     if as a user - read only request.
     """
     def has_permission(self, request, view):
-        return bool(
-            request.method in SAFE_METHODS
-            and request.user
-            and request.user.is_authenticated
-        ) or (
-            request.user and request.user.is_staff
-        )
+        if request.method in SAFE_METHODS:
+            return True
+
+        return bool(request.user and request.user.is_staff)
 
 
 class IsAuthenticatedOrAdminForOrders(BasePermission):
@@ -25,6 +22,8 @@ class IsAuthenticatedOrAdminForOrders(BasePermission):
         if request.user and request.user.is_staff:
             return True
         if request.user and request.user.is_authenticated:
-            if view.action in ["list", "create"]:
+            action = getattr(view, "action", None)  # захист від None
+            if action in ["list", "create"]:
                 return True
+
         return False
