@@ -1,7 +1,7 @@
 from datetime import datetime
 from rest_framework.viewsets import GenericViewSet
 from django.db.models import F, Count
-from rest_framework import viewsets, mixins
+from rest_framework import mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.authentication import TokenAuthentication
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
